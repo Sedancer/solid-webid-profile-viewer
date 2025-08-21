@@ -61,7 +61,7 @@ export function useWebIdProfile(defaultWebId: string) {
                         store
                             .each($rdf.sym(webId), $rdf.sym(`${VCARD}hasEmail`)) // => Node[]
                             .map((node: $rdf.Node) => {
-                                const value = store.any(node, $rdf.sym(`${VCARD}value`)); // => Node | null
+                                const value = store.any(node as $rdf.NamedNode, $rdf.sym(`${VCARD}value`)); // => Node | null
                                 return (value?.value || node.value || "").replace("mailto:", "");
                             })
                             .filter((s): s is string => Boolean(s)) // type guard
@@ -73,7 +73,7 @@ export function useWebIdProfile(defaultWebId: string) {
                         store
                             .each($rdf.sym(webId), $rdf.sym(`${VCARD}hasTelephone`))
                             .map((node: $rdf.Node) => {
-                                const value = store.any(node, $rdf.sym(`${VCARD}value`));
+                                const value = store.any(node as $rdf.NamedNode, $rdf.sym(`${VCARD}value`));
                                 return (value?.value || node.value || "").replace("tel:", "");
                             })
                             .filter(Boolean)
@@ -102,8 +102,9 @@ export function useWebIdProfile(defaultWebId: string) {
                     homepage,
                     bio,
                 });
-            } catch (err: any) {
-                setError(err.message || "Error Loading Profile");
+            } catch (err) {
+                const e = err as Error;
+                setError(e.message || "Error Loading Profile");
             } finally {
                 setLoading(false);
             }
