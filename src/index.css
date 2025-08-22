@@ -13,3 +13,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+@media (max-width: 384px) {
+  #root{
+    display: flex;
+  }
+}
